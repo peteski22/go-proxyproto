@@ -18,6 +18,8 @@ var (
 	// e.g. go build -ldflags -X "github.com/pires/go-proxyproto.DefaultReadHeaderTimeout=1s"
 	DefaultReadHeaderTimeout = 10 * time.Second
 
+	// ErrInvalidUpstream should be returned when an upstream connection address
+	// is not trusted, and therefore is invalid.
 	ErrInvalidUpstream = fmt.Errorf("proxyproto: upstream connection address not trusted for PROXY information")
 )
 
@@ -64,7 +66,7 @@ func ValidateHeader(v Validator) func(*Conn) {
 	}
 }
 
-// Accept waits for and returns the next connection to the listener.
+// Accept waits for and returns the next valid connection to the listener.
 func (p *Listener) Accept() (net.Conn, error) {
 	for {
 		// Get the underlying connection
